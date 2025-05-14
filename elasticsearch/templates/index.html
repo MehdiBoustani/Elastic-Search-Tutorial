@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APOD Search</title>
+
+    <!-- CSS Written by ChatGPT -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 70%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            gap: 20px;
+        }
+        .result-image {
+            flex: 0 0 300px;
+        }
+        .result-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .result-content {
+            flex: 1;
+        }
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .result-date {
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .result-explanation {
+            color: #444;
+            line-height: 1.6;
+        }
+        .result-authors {
+            margin-top: 10px;
+            color: #666;
+            font-style: italic;
+        }
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>APOD Search</h1>
+    
+    {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+    {% endif %}
+    
+    <form class="search-form" method="POST">
+        <input type="text" name="query" class="search-input" value="{{ query }}" placeholder="Search APOD...">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Search Results</h2>
+        {% for result in results %}
+            <div class="result-item">
+                <div class="result-image">
+                    <img src="{{ result.image_url }}" alt="{{ result.title }}">
+                </div>
+                <div class="result-content">
+                    <div class="result-title">{{ result.title }}</div>
+                    <div class="result-date">{{ result.date }}</div>
+                    <div class="result-explanation">{{ result.explanation }}</div>
+                    {% if result.authors %}
+                        <div class="result-authors">By: {{ result.authors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% elif query %}
+        <p>No results found for "{{ query }}"</p>
+    {% endif %}
+</body>
+</html>
