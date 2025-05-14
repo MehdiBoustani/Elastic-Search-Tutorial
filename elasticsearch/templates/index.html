@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APOD Search</title>
 
-    <!-- CSS Written by ChatGPT -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,21 +75,63 @@
             margin-bottom: 20px;
             border-radius: 4px;
         }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 40px;
+            margin-bottom: 10px;
+            color: #2F2F2F;
+        }
     </style>
 </head>
 <body>
     <h1>APOD Search</h1>
-    
+
     {% if error %}
-        <div class="error-message">
-            {{ error }}
-        </div>
+        <div class="error-message">{{ error }}</div>
     {% endif %}
-    
-    <form class="search-form" method="POST">
-        <input type="text" name="query" class="search-input" value="{{ query }}" placeholder="Search APOD...">
-        <button type="submit" class="search-button">Search</button>
-    </form>
+
+    <div class="tabs">
+
+        <div class="search-form">
+            <div class="section-title">Simple Match Search</div>
+            <form action="/" method="post">
+                <input type="hidden" name="mode" value="simple">
+                <input type="text" name="query" class="search-input" placeholder="Search title...">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+
+        <div class="search-form">
+            <div class="section-title">Fuzzy Search (Typo Tolerant)</div>
+            <form action="/" method="post">
+                <input type="hidden" name="mode" value="fuzzy">
+                <input type="text" name="query" class="search-input" placeholder="Search title with typos...">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+
+        <div class="search-form">
+            <div class="section-title">Date Range Filter</div>
+            <form action="/" method="post">
+                <input type="hidden" name="mode" value="filter">
+                <input type="date" name="date_from" class="search-input">
+                <input type="date" name="date_to" class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+
+        <div class="search-form">
+            <div class="section-title">Combined Search (Match + Fuzzy + Filter)</div>
+            <form action="/" method="post">
+                <input type="hidden" name="mode" value="combined">
+                <input type="text" name="query" class="search-input" placeholder="Combined query...">
+                <input type="date" name="date_from" class="search-input">
+                <input type="date" name="date_to" class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+    </div>
 
     {% if results %}
         <h2>Search Results</h2>
